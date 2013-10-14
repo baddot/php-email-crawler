@@ -57,17 +57,17 @@ class Crawl{
     }
  
     /**
-	 * Check if you use the php command line to run this script
-	 * @return boolean
-	 */
+     * Check if you use the php command line to run this script
+     * @return boolean
+     */
     private function isCli() {
         return php_sapi_name()==="cli";
     }
 	
-	/**
-	 * Get the content of the current page ($this->hp) with file_get_contents()
-	 * @return string
-	 */
+    /**
+     * Get the content of the current page ($this->hp) with file_get_contents()
+     * @return string
+     */
     public function getContent() {
         if (!function_exists('curl_init')){
             return htmlentities(@file_get_contents($this->hp, false, $this->getContext()), ENT_QUOTES, 'utf-8');
@@ -77,10 +77,10 @@ class Crawl{
         }
     }
  
-	/**
-	 * Get the content of the current page ($this->hp) with cURL
-	 * @return string
-	 */
+    /**
+     * Get the content of the current page ($this->hp) with cURL
+     * @return string
+     */
     private function curl_getContent() {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->hp);
@@ -90,10 +90,10 @@ class Crawl{
         return $output;
     }
  
-	/**
-	 * Get the context to open the cURL socket
-	 * @return stream_context_resource
-	 */
+    /**
+     * Get the context to open the cURL socket
+     * @return stream_context_resource
+     */
     private function getContext() {
         $opts = array(
             'http' => array(
@@ -104,11 +104,11 @@ class Crawl{
         return stream_context_create($opts);
     }
 	
-	/**
+    /**
      * Use the web content to create an email array
-	 * Make sure we don't save the same email adress twice
+     * Make sure we don't save the same email adress twice
      * @return array
-	 */
+     */
     public  function getEmailArray() {
         $email_pattern_normal="(([-_.\w]+@[a-zA-Z0-9_]+?\.[a-zA-Z0-9]{2,6}))";
         preg_match_all($email_pattern_normal, $this->content, $result_email, PREG_PATTERN_ORDER);
@@ -116,10 +116,10 @@ class Crawl{
         return $unique_emails;
     }
  
-	/**
-	 * Deletes duplicate values on multi dimensional arrays
-	 * @return array
-	 */
+    /**
+     * Deletes duplicate values on multi dimensional arrays
+     * @return array
+     */
     private function array_unique_deep($array) {
         $values=array();
         foreach ($array as $part) {
@@ -128,11 +128,12 @@ class Crawl{
         }
         return array_unique($values);
     }
-	/**
-	 * Fetch URLs from the current site to use them later (recursion)
-	 * Make sure to delete duplicate entries
-	 * @return array
-	 */
+    
+    /**
+     * Fetch URLs from the current site to use them later (recursion)
+     * Make sure to delete duplicate entries
+     * @return array
+     */
     public function getURLArray() {
         $url_pattern= '((http:\/\/|https:\/\/|www\.)[a-zA-Z0-9\-\.]{2,}\.([a-zA-Z.]{2,5}))i';
         preg_match_all($url_pattern, $this->content, $result_url, PREG_PATTERN_ORDER);
@@ -141,11 +142,11 @@ class Crawl{
         return $unique_urls;
     }
  
-	/**
-	 * A little function to set www/http prefixes
-	 * @param URL-Array $array
-	 * @return array
-	 */
+    /**
+     * A little function to set www/http prefixes
+     * @param URL-Array $array
+     * @return array
+     */
     private function setURLPrefix($array) {
         $prefix_array=array();
         $i=0;
@@ -157,12 +158,12 @@ class Crawl{
         return $prefix_array;
     }
 	
-	/**
-	 * Start function with recursion
-	 * Creates new objects depending on recursion depth
-	 * Merges & sorts the obtained email address and returns them
-	 * @return mails
-	 */
+     /**
+      * Start function with recursion
+      * Creates new objects depending on recursion depth
+      * Merges & sorts the obtained email address and returns them
+      * @return mails
+      */
      public  function start() {
         if($this->rlevel<$this->rmax) {
             $this->content = $this->getContent();
