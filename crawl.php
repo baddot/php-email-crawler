@@ -23,7 +23,7 @@
   * 
   */
  
-	echo "==================================================\r\n";
+    echo "==================================================\r\n";
     echo " Welcome to Crawl 1.0 (Initial Release)\r\n";
     echo "==================================================\r\n";
     echo " Make sure cURL is activated for best perfomance  \r\n";
@@ -48,7 +48,7 @@ class Crawl{
      * Constructor
      * @param string $arg1, int $arg2, int $arg3, string $arg4
      */
-	public function __construct($arg1, $arg2, $arg3, $arg4) {
+    public function __construct($arg1, $arg2, $arg3, $arg4) {
         if(!$this->isCli()) die("Please use php-cli!");
         $this->hp = $arg1;
         $this->rlevel = $arg2;
@@ -68,7 +68,7 @@ class Crawl{
 	 * Get the content of the current page ($this->hp) with file_get_contents()
 	 * @return string
 	 */
-	public function getContent() {
+    public function getContent() {
         if (!function_exists('curl_init')){
             return htmlentities(@file_get_contents($this->hp, false, $this->getContext()), ENT_QUOTES, 'utf-8');
         }
@@ -109,7 +109,7 @@ class Crawl{
 	 * Make sure we don't save the same email adress twice
      * @return array
 	 */
-	public  function getEmailArray() {
+    public  function getEmailArray() {
         $email_pattern_normal="(([-_.\w]+@[a-zA-Z0-9_]+?\.[a-zA-Z0-9]{2,6}))";
         preg_match_all($email_pattern_normal, $this->content, $result_email, PREG_PATTERN_ORDER);
         $unique_emails=$this->array_unique_deep($result_email);
@@ -133,7 +133,7 @@ class Crawl{
 	 * Make sure to delete duplicate entries
 	 * @return array
 	 */
-	public function getURLArray() {
+    public function getURLArray() {
         $url_pattern= '((http:\/\/|https:\/\/|www\.)[a-zA-Z0-9\-\.]{2,}\.([a-zA-Z.]{2,5}))i';
         preg_match_all($url_pattern, $this->content, $result_url, PREG_PATTERN_ORDER);
         $unique_urls=$this->array_unique_deep($result_url[0]);
@@ -163,7 +163,7 @@ class Crawl{
 	 * Merges & sorts the obtained email address and returns them
 	 * @return mails
 	 */
-	public  function start() {
+     public  function start() {
         if($this->rlevel<$this->rmax) {
             $this->content = $this->getContent();
             $this->urls = $this->getURLArray();
