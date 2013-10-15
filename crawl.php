@@ -106,7 +106,7 @@ class Crawl{
 	
     /**
      * Use the web content to create an email array
-     * Make sure we don't save the same email adress twice
+     * Make sure we don't save the same email address multiple times
      * @return array
      */
     public  function getEmailArray() {
@@ -160,8 +160,8 @@ class Crawl{
 	
      /**
       * Start function with recursion
-      * Creates new objects depending on recursion depth
-      * Merges & sorts the obtained email address and returns them
+      * Creates new instances depending on recursion depth
+      * Merges the obtained email addresses and returns them
       * @return mails
       */
      public  function start() {
