@@ -71,15 +71,14 @@ class Crawl{
     public function getContent() {
         if (!function_exists('curl_init')){
             $content=file_get_contents($this->hp, false, $this->getContext());
-        } 
-		else {
+        } else {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $this->hp);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $content = curl_exec($ch);
             curl_close($ch);
         }
-		return $content;
+	return $content;
     }
   
     /**
@@ -103,11 +102,11 @@ class Crawl{
      */
     public  function getEmailArray() {
         $email_pattern_normal="(([-_.\w]+@[a-zA-Z0-9_]+?\.[a-zA-Z0-9]{2,6}))";
-		$email_pattern_exp1="(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})";
+	$email_pattern_exp1="(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})";
         preg_match_all($email_pattern_normal, $this->content, $result_email_normal, PREG_PATTERN_ORDER);
-		preg_match_all($email_pattern_exp1, $this->content, $result_email_exp1, PREG_PATTERN_ORDER);
+	preg_match_all($email_pattern_exp1, $this->content, $result_email_exp1, PREG_PATTERN_ORDER);
         $email_array=array_merge($result_email_normal, $result_email_exp1);
-		$unique_emails=$this->array_unique_deep($email_array);
+	$unique_emails=$this->array_unique_deep($email_array);
         return $unique_emails;
     }
  
@@ -119,11 +118,10 @@ class Crawl{
         $values=array();
         foreach ($array as $part) {
             if (is_array($part)) {
-				$values=array_merge($values,$this->array_unique_deep($part));
-			}
-            else { 
-				$values[]=$part;
-			}
+		$values=array_merge($values,$this->array_unique_deep($part));
+	    } else { 
+		$values[]=$part;
+	    }
         }
         return array_unique($values);
     }
@@ -134,9 +132,9 @@ class Crawl{
      * @return array
      */
     public function getURLArray() {
-	    $url_pattern='((\:href=\"|(http(s?))\://){1}\S+)';
+	$url_pattern='((\:href=\"|(http(s?))\://){1}\S+)';
         preg_match_all($url_pattern, $this->content, $result_url, PREG_PATTERN_ORDER);
-	    array_walk($result_url[0], function(&$item) { $item = substr($item, 0, strpos($item, '"')); });
+	array_walk($result_url[0], function(&$item) { $item = substr($item, 0, strpos($item, '"')); });
         $unique_urls=$this->array_unique_deep($result_url[0]);
         $unique_urls=array_unique($this->setURLPrefix($unique_urls));
         return $unique_urls;
@@ -148,8 +146,7 @@ class Crawl{
      * @return array
      */
     private function setURLPrefix($array) {
-        $prefix_array=array();
-        $i=0;
+        $prefix_array=array(); $i=0;
         foreach ($array as $part) {
             if(preg_match('/^(www\.)/', $part)) $prefix_array[$i]='http://'.$part;
             else $prefix_array[$i]=$part;
@@ -158,12 +155,12 @@ class Crawl{
         return $prefix_array;
     }
 	
-	/**
-	 * Temporarily function to print the result
-	 */
-	public function printResult($data) {
-		print_r($data);
-	}
+    /**
+     * Temporarily function to print the result
+     */
+    public function printResult($data) {
+  	print_r($data);
+    }
 	
     /**
      * Start function with recursion
